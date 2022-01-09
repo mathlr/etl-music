@@ -37,4 +37,7 @@ Data scraped from the mp3 files and retrieved by the spotify-API needed to be tr
 - For the mp3 scraping proccess, the object returned by the function of the library TinyTag has many attributes that were not interesting to store/analyse, so only selected attributes were filtered from data. The attributes could return None values, which were substituted by empty strings. Non-printable characters and line-break characters were excluded from the string-attributes before storage. A timestamp field was introduced to every object stored.
 - Data returned by the spotfy-API needed transformation too. From the json returned, only a few fields were interesting for analysis. Whenever an artist was not found, the string "N/F" was written in its name. For the genres, the list needed to be converted in a way possible to be inserted directly on the SQL standard. To inform whenever more than one artist were brought by the search, a new field named 'accuracy' was filled.
 ### Known issues / Future development
-#### sdf
+#### Temporary storage
+Every temporary file created is being stored inside the docker container, but this is not the best practice. The best way to proper store these files would be uploading them to a cloud storage (such as S3 from AWS) and retrieving them only when necessary.
+#### Datalake for data downloaded by spotify API
+The data downloaded by the search API have to be stored in a lake-type storage to maintain the historic data for re-processing needs. The schema of the data from the API could change any time, so the best way to store this kind of data is using a noSQL db. For the next releases, I will create a Cassandra db to store them.
